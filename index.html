@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="theme-color" content="#281c17" />
+<meta name="description" content="Presentasi Sesi 3 Corporate Excel Training — Count & Sum Conditional oleh Post Management Data." />
+<title>Sesi 3 — Count & Sum Conditional | Post Management Data</title>
+<style>
+  :root {
+    --espresso: #281c17; --coffee: #493126; --brown: #6a4734; --caramel: #c58d55;
+    --cream: #f8f2e9; --paper: #fffdf9; --ink: #30241e; --muted: #82756b;
+    --line: #e7d9c9; --sage: #e6eee5; --blue: #e7edf2; --rose: #f5e5de;
+    --goldwash: #f5ead9; --shadow: 0 22px 70px rgba(22, 14, 10, .22);
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; min-height: 100%; background: var(--espresso); color: var(--ink); font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+  body { min-height: 100vh; display: flex; flex-direction: column; overflow-x: hidden; }
+  button { font: inherit; }
+  .topbar { height: 58px; padding: 0 22px; color: #f9eee2; display: flex; align-items: center; justify-content: space-between; gap: 14px; border-bottom: 1px solid rgba(255,255,255,.12); background: rgba(26,18,14,.78); }
+  .brand { display: flex; align-items: center; gap: 11px; min-width: 0; }
+  .brand-mark { width: 33px; height: 33px; flex: 0 0 auto; border: 1px solid rgba(235,190,137,.8); border-radius: 10px; display: grid; place-items: center; color: #e9b982; font-weight: 800; font-size: 13px; letter-spacing: -.08em; }
+  .brand-copy { min-width: 0; }
+  .brand-title { font-size: 12px; letter-spacing: .16em; font-weight: 800; white-space: nowrap; }
+  .brand-sub { margin-top: 2px; font-size: 10px; color: #c5b4a8; letter-spacing: .08em; text-transform: uppercase; }
+  .top-actions { display: flex; align-items: center; gap: 8px; }
+  .quiet-btn { border: 1px solid rgba(255,255,255,.19); background: transparent; color: #f9eee2; border-radius: 9px; padding: 8px 11px; font-size: 11px; cursor: pointer; transition: .2s; }
+  .quiet-btn:hover, .quiet-btn:focus-visible { background: rgba(255,255,255,.1); outline: none; }
+  main { flex: 1; display: grid; place-items: center; padding: 20px 18px; position: relative; }
+  .presentation { width: min(100%, 1120px); aspect-ratio: 16 / 9; max-height: calc(100vh - 142px); min-height: 390px; position: relative; background: var(--cream); border-radius: 16px; overflow: hidden; box-shadow: var(--shadow); }
+  .slide { position: absolute; inset: 0; padding: clamp(28px, 4.3vw, 58px) clamp(28px, 5vw, 68px) 52px; overflow: auto; opacity: 0; transform: translateX(24px); pointer-events: none; transition: opacity .3s ease, transform .3s ease; background: radial-gradient(ellipse at 100% 0%, rgba(197,141,85,.09), transparent 32%), var(--cream); }
+  .slide.active { opacity: 1; transform: translateX(0); pointer-events: auto; z-index: 1; }
+  .slide.exit-left { transform: translateX(-24px); }
+  .slide-number { position: absolute; right: 27px; bottom: 20px; color: #a59484; font-size: 10px; letter-spacing: .16em; font-weight: 700; }
+  .eyebrow { display: inline-flex; align-items: center; gap: 9px; color: var(--brown); font-size: 10px; letter-spacing: .18em; text-transform: uppercase; font-weight: 800; margin-bottom: 13px; }
+  .eyebrow::before { content: ""; width: 24px; height: 2px; background: var(--caramel); }
+  h1, h2, h3, p { margin-top: 0; }
+  h1 { font-family: Georgia, "Times New Roman", serif; font-weight: 500; font-size: clamp(36px, 5vw, 66px); letter-spacing: -.045em; line-height: 1.02; margin-bottom: 20px; }
+  h2 { font-family: Georgia, "Times New Roman", serif; font-size: clamp(28px, 3.4vw, 42px); line-height: 1.1; letter-spacing: -.035em; font-weight: 500; margin-bottom: 14px; }
+  h3 { font-size: 15px; line-height: 1.25; margin-bottom: 8px; color: var(--coffee); }
+  p { color: #66574c; line-height: 1.55; font-size: clamp(12px, 1.15vw, 15px); }
+  .lead { max-width: 650px; font-size: clamp(15px, 1.65vw, 19px); color: #6c5b4e; line-height: 1.55; }
+  .accent { color: var(--caramel); }
+  
+  /* === COVER ASLI (COKELAT) === */
+  .cover { background: linear-gradient(120deg, rgba(40,28,23,.99), rgba(73,49,38,.97)); color: var(--cream); }
+  .cover::before { content: ""; position: absolute; width: 50%; aspect-ratio: 1; right: -12%; top: -25%; border-radius: 50%; border: 1px solid rgba(223,176,126,.28); box-shadow: 0 0 0 34px rgba(223,176,126,.04), 0 0 0 74px rgba(223,176,126,.035), 0 0 0 125px rgba(223,176,126,.025); }
+  .cover::after { content: ""; position: absolute; right: 12%; bottom: 15%; width: 19%; height: 29%; border: 1px solid rgba(223,176,126,.3); border-radius: 48% 48% 8px 8px; transform: rotate(14deg); }
+  .cover .eyebrow { color: #e9bc8e; }
+  .cover h1 { max-width: 700px; position: relative; z-index: 1; }
+  .cover .lead { color: #d8c8ba; max-width: 560px; position: relative; z-index: 1; }
+  .cover-meta { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 26px; position: relative; z-index: 1; }
+  .pill { padding: 9px 13px; border: 1px solid rgba(255,255,255,.18); border-radius: 100px; color: #e8d9ca; font-size: 11px; letter-spacing: .02em; }
+  .cover-footer { position: absolute; left: clamp(28px, 5vw, 68px); bottom: 27px; color: #bba697; font-size: 10px; letter-spacing: .14em; text-transform: uppercase; }
+
+  /* Layout umum */
+  .layout-two { display: grid; grid-template-columns: 1.08fr .92fr; gap: clamp(20px, 4vw, 46px); align-items: center; }
+  .card-grid { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 13px; margin-top: 25px; }
+  .card { background: rgba(255,253,249,.88); border: 1px solid var(--line); border-radius: 13px; padding: 17px 17px 15px; min-width: 0; }
+  .card p { font-size: 12px; margin-bottom: 0; }
+  .card .number { color: var(--caramel); font-family: Georgia, serif; font-size: 26px; margin-bottom: 10px; }
+  .icon-box { width: 35px; height: 35px; border-radius: 10px; background: var(--goldwash); color: var(--brown); display: grid; place-items: center; font-size: 15px; font-weight: 800; margin-bottom: 12px; }
+  .side-note { background: var(--coffee); color: var(--cream); border-radius: 14px; padding: 23px; position: relative; overflow: hidden; }
+  .side-note::after { content:""; position:absolute; right:-35px; bottom:-50px; width:150px; height:150px; border:1px solid rgba(255,255,255,.13); border-radius:50%; box-shadow: 0 0 0 22px rgba(255,255,255,.035); }
+  .side-note h3 { color: #f3cfaa; }
+  .side-note p { color: #e1d1c4; font-size: 12px; }
+  .side-note p:last-child { margin-bottom: 0; }
+  .flow { display: flex; align-items: stretch; gap: 8px; margin: 28px 0 22px; }
+  .flow-step { flex: 1; background: var(--paper); border: 1px solid var(--line); border-radius: 12px; padding: 15px 12px; min-width: 0; }
+  .flow-step b { display: block; font-size: 12px; color: var(--coffee); margin-bottom: 6px; }
+  .flow-step span { display: block; font-size: 10px; line-height: 1.4; color: var(--muted); }
+  .flow-arrow { align-self: center; color: var(--caramel); font-size: 20px; font-weight: 700; }
+  .bottom-callout { display: flex; align-items: center; gap: 13px; padding: 15px 18px; background: var(--goldwash); border-left: 3px solid var(--caramel); border-radius: 8px; color: var(--coffee); font-size: 12px; line-height: 1.5; }
+  .compare { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 25px; }
+  .compare-panel { border-radius: 14px; padding: 21px; min-height: 228px; }
+  .raw { background: var(--rose); }
+  .master { background: var(--sage); }
+  .panel-tag { display: inline-block; font-size: 9px; text-transform: uppercase; letter-spacing: .15em; font-weight: 800; border-radius: 100px; padding: 6px 9px; background: rgba(255,255,255,.66); margin-bottom: 13px; }
+  .compare-panel ul, .checklist { padding-left: 18px; margin: 10px 0 0; color: #65574d; font-size: 12px; line-height: 1.8; }
+  .mini-table { width: 100%; border-collapse: collapse; background: var(--paper); border: 1px solid var(--line); overflow: hidden; border-radius: 10px; margin-top: 20px; font-size: 11px; }
+  .mini-table th { text-align: left; color: #f8f0e8; background: var(--coffee); font-size: 10px; font-weight: 700; padding: 11px 12px; }
+  .mini-table td { border-bottom: 1px solid #eee4d8; padding: 11px 12px; color: #5d4e43; }
+  .mini-table tr:last-child td { border-bottom: 0; }
+  .ok { color: #43724d; font-weight: 800; }
+  .bad { color: #a24e37; font-weight: 800; }
+  .formula { font: 12px/1.7 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; color: #563c2b; background: #f2e6d6; border: 1px solid #e5d2bc; padding: 12px 14px; border-radius: 8px; display: inline-block; overflow-wrap: anywhere; }
+  .formula.dark { background: rgba(255,255,255,.08); border-color: rgba(255,255,255,.16); color: #f6d5b1; }
+  .formula-stack { display: grid; gap: 10px; margin-top: 16px; }
+  .formula-row { display: grid; grid-template-columns: minmax(100px, .45fr) 1fr; align-items: center; gap: 12px; background: var(--paper); border: 1px solid var(--line); padding: 12px 14px; border-radius: 9px; }
+  .formula-row strong { font-size: 11px; color: var(--coffee); }
+  .formula-row code { font-size: 11px; color: #765337; white-space: normal; overflow-wrap: anywhere; }
+  .split-example { display:grid; grid-template-columns:1fr 1fr; gap:15px; margin-top:20px; }
+  .example-card { background:var(--paper); border:1px solid var(--line); border-radius:12px; padding:16px; }
+  .example-card .sample { display:block; font: 14px ui-monospace, monospace; color:var(--coffee); background:#f2e6d6; border-radius:7px; padding:11px; margin:10px 0; }
+  .example-card small { color:var(--muted); font-size:10px; line-height:1.5; display:block; }
+  .steps { counter-reset: step; display:grid; gap:12px; margin-top:22px; }
+  .step { display:grid; grid-template-columns:40px 1fr; gap:14px; align-items:start; }
+  .step::before { counter-increment:step; content:counter(step, decimal-leading-zero); width:38px; height:38px; border-radius:12px; display:grid; place-items:center; background:var(--goldwash); color:var(--brown); font-size:11px; font-weight:800; }
+  .step h3 { margin: 3px 0 4px; }
+  .step p { font-size: 11px; margin-bottom: 0; }
+  .formula-reference-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:9px 11px; margin-top:16px; }
+  .formula-reference-card { min-width:0; background:var(--paper); border:1px solid var(--line); border-radius:9px; padding:10px 12px; }
+  .formula-reference-card h3 { font-size:11px; margin-bottom:5px; }
+  .formula-reference-card code { display:block; color:#765337; font:10.5px/1.45 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; overflow-wrap:anywhere; }
+  .formula-reference-card p { margin:5px 0 0; font-size:10px; line-height:1.4; }
+  .timeline { display:grid; grid-template-columns: 1fr 1fr 1fr; gap:10px; margin-top:24px; }
+  .time-box { background:var(--paper); border:1px solid var(--line); border-radius:12px; padding:16px; }
+  .time-box strong { display:block; color:var(--brown); font: 27px Georgia,serif; margin-bottom:5px; }
+  .time-box span { display:block; font-size:11px; color:var(--muted); line-height:1.4; }
+  .time-box.active-time { background:var(--coffee); border-color:var(--coffee); }
+  .time-box.active-time strong, .time-box.active-time span { color:#f8e5d2; }
+  .keyline { display:flex; gap:11px; margin-top:18px; align-items:flex-start; }
+  .keyline .dot { width:7px; height:7px; margin-top:6px; border-radius:50%; background:var(--caramel); flex:0 0 auto; }
+  .keyline p { margin-bottom:0; font-size:12px; }
+  .note-pop { position: fixed; inset: 0; z-index: 10; display:none; background:rgba(11,8,6,.52); padding:18px; align-items:center; justify-content:center; }
+  .note-pop.open { display:flex; }
+  .note-card { width:min(620px,100%); max-height:80vh; overflow:auto; background:var(--paper); border-radius:16px; padding:25px; box-shadow:var(--shadow); }
+  .note-head { display:flex; align-items:center; justify-content:space-between; gap:15px; }
+  .note-head h3 { font-size:19px; font-family:Georgia,serif; }
+  .note-card p, .note-card li { font-size:13px; }
+  .role-guide-card { width:min(980px,100%); max-height:88vh; overflow:auto; background:var(--cream); border-radius:16px; padding:clamp(18px,3vw,30px); box-shadow:var(--shadow); }
+  .role-guide-intro { background:var(--goldwash); border-left:3px solid var(--caramel); border-radius:8px; padding:13px 15px; color:var(--coffee); font-size:12px; line-height:1.6; margin:10px 0 18px; }
+  .role-guide-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:13px; }
+  .role-guide-item { min-width:0; background:var(--paper); border:1px solid var(--line); border-radius:12px; padding:16px; }
+  .role-guide-item h4 { margin:0 0 8px; color:var(--coffee); font-size:13px; }
+  .role-guide-item p, .role-guide-item li { color:#65574d; font-size:11px; line-height:1.55; }
+  .role-guide-item p { margin-bottom:8px; }
+  .role-guide-meta { color:var(--brown); font-size:10px; font-weight:800; letter-spacing:.04em; text-transform:uppercase; margin:9px 0 5px; }
+  .role-guide-code { display:block; white-space:normal; overflow-wrap:anywhere; padding:9px 10px; border-radius:7px; border:1px solid #e5d2bc; background:#f2e6d6; color:#563c2b; font:11px/1.6 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; margin:6px 0; }
+  .role-guide-result { border-radius:7px; background:#edf2e9; color:#41643d; padding:9px 10px; font-size:11px; line-height:1.5; margin-top:8px; }
+  .role-guide-warning { color:#8e4d34 !important; }
+  .btn-link { display:inline-flex; align-items:center; gap:8px; padding:12px 20px; background:var(--coffee); color:white !important; text-decoration:none; border-radius:8px; font-weight:600; font-size:13px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); transition:transform 0.2s, background 0.2s; }
+  .btn-link:hover { transform:translateY(-2px); background:var(--brown); }
+  @media (max-width:720px) {
+    .topbar { height:auto; min-height:54px; padding:8px 12px; flex-wrap:wrap; }
+    .top-actions { width:100%; flex-wrap:wrap; justify-content:flex-end; gap:6px; }
+    .brand-sub, .keyboard-hint { display:none; }
+    .quiet-btn { padding:7px 8px; font-size:10px; }
+    .role-guide-grid { grid-template-columns:1fr; }
+    .role-guide-card { max-height:90vh; padding:16px; }
+  }
+  .controls { min-height:64px; color:#f1e2d5; padding:10px 22px; display:flex; align-items:center; justify-content:space-between; gap:14px; border-top:1px solid rgba(255,255,255,.12); background:rgba(26,18,14,.78); }
+  .progress-wrap { display:flex; align-items:center; gap:12px; flex:1; max-width:390px; }
+  .progress-track { height:3px; background:rgba(255,255,255,.18); border-radius:20px; flex:1; overflow:hidden; }
+  .progress-fill { height:100%; width:0; background:var(--caramel); transition:width .25s ease; }
+  .counter { font-size:11px; color:#cbb9aa; min-width:45px; font-variant-numeric:tabular-nums; }
+  .navs { display:flex; gap:8px; align-items:center; }
+  .nav-btn { background:var(--caramel); color:#241812; border:0; border-radius:10px; width:40px; height:38px; display:grid; place-items:center; cursor:pointer; font-size:18px; font-weight:800; transition:transform .15s, opacity .15s; }
+  .nav-btn:hover { transform:translateY(-1px); }
+  .nav-btn:disabled { opacity:.35; cursor:not-allowed; transform:none; }
+  .keyboard-hint { font-size:10px; color:#ad9b8c; }
+  @media (max-width: 720px) {
+    .topbar { height:54px; padding:0 12px; }
+    .brand-sub, .keyboard-hint { display:none; }
+    .brand-title { font-size:10px; letter-spacing:.1em; }
+    main { padding:12px 8px; }
+    .presentation { aspect-ratio:auto; height:min(72vh, 690px); min-height:480px; max-height:none; border-radius:12px; }
+    .slide { padding:27px 22px 48px; }
+    h1 { font-size:40px; }
+    h2 { font-size:30px; }
+    .layout-two { grid-template-columns:1fr; gap:16px; }
+    .card-grid { gap:8px; margin-top:16px; }
+    .card { padding:12px; }
+    .card p { font-size:10px; }
+    .flow { flex-direction:column; gap:6px; margin:17px 0; }
+    .flow-step { padding:10px 12px; }
+    .flow-arrow { transform:rotate(90deg); align-self:center; font-size:15px; line-height:1; }
+    .compare, .split-example { gap:9px; }
+    .compare-panel { padding:13px; min-height:unset; }
+    .formula-reference-grid { grid-template-columns:1fr; gap:8px; }
+    .timeline { gap:7px; }
+    .time-box { padding:11px; }
+    .time-box strong { font-size:23px; }
+    .time-box span { font-size:9px; }
+    .formula-row { grid-template-columns:1fr; gap:4px; padding:10px; }
+    .mini-table { font-size:9px; }
+    .mini-table th, .mini-table td { padding:8px 7px; }
+    .side-note { padding:17px; }
+    .controls { padding:9px 12px; min-height:58px; }
+    .progress-wrap { max-width:unset; }
+    .nav-btn { width:37px; height:35px; }
+    .cover-footer { left:22px; }
+  }
+  @media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition:none !important; scroll-behavior:auto !important; } }
+  @media print {
+    html, body { background:#fff; }
+    .topbar, .controls, .note-pop { display:none !important; }
+    main { display:block; padding:0; }
+    .presentation { width:100%; max-height:none; height:auto; aspect-ratio:auto; border-radius:0; overflow:visible; box-shadow:none; }
+    .slide, .slide.active { position:relative; inset:auto; opacity:1; transform:none; pointer-events:auto; width:100%; height:56.25vw; min-height:0; page-break-after:always; overflow:hidden; display:block; }
+  }
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="brand" aria-label="Post Management Data">
+    <div class="brand-mark">PMD</div>
+    <div class="brand-copy">
+      <div class="brand-title">POST MANAGEMENT DATA</div>
+      <div class="brand-sub">Corporate Excel Training</div>
+    </div>
+  </div>
+  <div class="top-actions">
+    <button class="quiet-btn" id="outlineBtn" type="button" title="Lihat ringkasan slide">Daftar materi</button>
+    <button class="quiet-btn" id="cheatBtn" type="button" title="Lihat semua rumus Sesi 3">Cheat Sheet</button>
+    <button class="quiet-btn" id="notesBtn" type="button" title="Buka catatan tutor">Catatan tutor</button>
+    <button class="quiet-btn" id="fullscreenBtn" type="button" title="Mode layar penuh">⛶ Layar penuh</button>
+  </div>
+</header>
+
+<main>
+<div class="presentation" id="presentation" aria-label="Presentasi Sesi 3" aria-live="polite">
+
+<!-- ============ 01 · COVER ============ -->
+<section class="slide cover active" data-title="Pembuka" data-note="Buka sesi dengan menyampaikan bahwa Sesi 3 adalah kelanjutan dari Sesi 1 (Raw Data) dan Sesi 2 (IF/AND/OR). Jika Sesi 2 fokus mengambil keputusan, Sesi 3 fokus menghitung dan menjumlahkan data berdasarkan kondisi. Sampaikan bahwa 3 bug kritis di workbook (RD, Sumif no.3, Nilai Peserta C10) sudah diperbaiki sebelum sesi dimulai.">
+  <div class="eyebrow">SESI 03 · COUNT &amp; SUM CONDITIONAL</div>
+  <h1>Count &amp; Sum<br><span class="accent">Conditional</span></h1>
+  <p class="lead">Membedah tuntas COUNTIF, COUNTIFS, SUMIF, SUMIFS, dan kombinasinya dengan IF untuk otomasi analisis data di Excel.</p>
+  <div class="cover-meta">
+    <span class="pill">PT Sinar Jernih Sarana</span>
+    <span class="pill">Corporate Excel Training</span>
+    <span class="pill">IFM Operations</span>
+  </div>
+  <div class="cover-footer">Post Management Data · Learn it, structure it, automate it</div>
+  <div class="slide-number">01 / 18</div>
+</section>
+
+<!-- ============ 02 · TUJUAN ============ -->
+<section class="slide" data-title="Target pembelajaran" data-note="Jelaskan 6 tujuan pembelajaran. Tekankan bahwa ini bukan sekadar hafalan rumus, tapi cara menjawab pertanyaan bisnis: 'berapa banyak?' dan 'berapa totalnya?' berdasarkan kondisi. Peserta yang sudah paham Sesi 2 (IF) akan lebih cepat menangkap Kombinasi IF di bagian akhir.">
+  <div class="eyebrow">01 · LEARNING OUTCOMES</div>
+  <h2>Setelah sesi ini, peserta mampu…</h2>
+  <p class="lead">Menjawab pertanyaan "berapa banyak?" dan "berapa totalnya?" berdasarkan kondisi tertentu.</p>
+  <div class="card-grid">
+    <div class="card"><div class="icon-box">01</div><h3>Review dasar</h3><p>Menggunakan SUM, COUNT, AVERAGE, MAX, MIN sebagai fondasi.</p></div>
+    <div class="card"><div class="icon-box">02</div><h3>Hitung 1 kondisi</h3><p>COUNTIF untuk menjawab pertanyaan satu syarat.</p></div>
+    <div class="card"><div class="icon-box">03</div><h3>Hitung banyak kondisi</h3><p>COUNTIFS untuk dua atau lebih syarat sekaligus.</p></div>
+    <div class="card"><div class="icon-box">04</div><h3>Jumlahkan dengan kondisi</h3><p>SUMIF untuk satu syarat, SUMIFS untuk banyak syarat.</p></div>
+    <div class="card"><div class="icon-box">05</div><h3>Kombinasi IF + agregat</h3><p>Ambil keputusan berdasarkan hasil COUNTIF atau SUMIF.</p></div>
+    <div class="card"><div class="icon-box">06</div><h3>Hafal urutan argumen</h3><p>Beda SUMIF vs SUMIFS — sumber error paling umum.</p></div>
+  </div>
+  <div class="slide-number">02 / 18</div>
+</section>
+
+<!-- ============ 03 · ALUR SESI ============ -->
+<section class="slide" data-title="Alur sesi" data-note="Gunakan diagram ini sebagai peta sesi. Peserta bergerak dari review dasar, masuk ke 4 fungsi utama (COUNTIF, COUNTIFS, SUMIF, SUMIFS), lalu ke kombinasi IF. Prinsip kuncinya: COUNT menjawab 'berapa banyak', SUM menjawab 'berapa total'. Jangan tertukar saat memilih fungsi.">
+  <div class="eyebrow">02 · BIG PICTURE</div>
+  <h2>Dari review ke kombinasi</h2>
+  <p class="lead">Hari ini kita bergerak dari dasar fungsi agregat menuju pengambilan keputusan berbasis hitungan.</p>
+  <div class="flow">
+    <div class="flow-step"><b>01 · Review</b><span>SUM, COUNT, AVERAGE</span></div><div class="flow-arrow">›</div>
+    <div class="flow-step"><b>02 · COUNTIF</b><span>Hitung 1 kondisi</span></div><div class="flow-arrow">›</div>
+    <div class="flow-step"><b>03 · COUNTIFS</b><span>Hitung banyak kondisi</span></div><div class="flow-arrow">›</div>
+    <div class="flow-step"><b>04 · SUMIF</b><span>Jumlahkan 1 kondisi</span></div><div class="flow-arrow">›</div>
+    <div class="flow-step"><b>05 · SUMIFS</b><span>Jumlahkan banyak kondisi</span></div><div class="flow-arrow">›</div>
+    <div class="flow-step"><b>06 · Kombinasi</b><span>IF + agregat</span></div>
+  </div>
+  <div class="bottom-callout"><strong>Prinsip utama:</strong> COUNT menjawab "berapa banyak", SUM menjawab "berapa total". Jangan tertukar saat memilih fungsi.</div>
+  <div class="slide-number">03 / 18</div>
+</section>
+
+<!-- ============ 04 · REVIEW DASAR ============ -->
+<section class="slide" data-title="Review dasar" data-note="Demo di sheet RD bersama peserta. Isi kolom Jawaban Peserta di N5:N11. Perhatikan kolom Cek dan Skor yang terisi otomatis. Tekankan beda COUNT (hanya angka) vs COUNTA (semua non-kosong). Contoh hasil: SUM H5:H19 = 48.342.000; COUNT A5:A19 = 15; AVERAGE H5:H19 ≈ 3.222.800; MAX = 11.692.000; MIN = 850.000.">
+  <div class="eyebrow">03 · QUICK REVIEW</div>
+  <h2>Review 5 fungsi wajib</h2>
+  <p class="lead">Fungsi dasar ini menjadi fondasi semua latihan hari ini.</p>
+  
+  <!-- TOMBOL LINK GOOGLE SHEETS -->
+  <div style="margin-top:12px; margin-bottom:12px; display:flex; gap:12px; align-items:center;">
+    <a href="https://docs.google.com/spreadsheets/d/1Hbi7VzUARj4os64rt-fSWkp6HUkstqCF/edit?usp=sharing&ouid=113453549576979377139&rtpof=true&sd=true" target="_blank" class="btn-link">
+      📂 Buka Workbook Excel Sesi 3
+    </a>
+    <span style="font-size:11px; color:var(--muted);">(Klik untuk membuka Google Sheets)</span>
+  </div>
+
+  <table class="mini-table">
+    <thead><tr><th>Fungsi</th><th>Kegunaan</th><th>Contoh</th></tr></thead>
+    <tbody>
+      <tr><td><b>SUM</b></td><td>Jumlahkan angka</td><td><code>=SUM(H5:H19)</code></td></tr>
+      <tr><td><b>COUNT</b></td><td>Hitung sel berisi angka</td><td><code>=COUNT(A5:A19)</code></td></tr>
+      <tr><td><b>COUNTA</b></td><td>Hitung sel tidak kosong</td><td><code>=COUNTA(B5:B19)</code></td></tr>
+      <tr><td><b>AVERAGE</b></td><td>Rata-rata angka</td><td><code>=AVERAGE(H5:H19)</code></td></tr>
+      <tr><td><b>MAX / MIN</b></td><td>Nilai terbesar / terkecil</td><td><code>=MAX(H5:H19)</code></td></tr>
+    </tbody>
+  </table>
+  <div class="bottom-callout" style="margin-top:16px"><strong>Demo:</strong> buka sheet <b>RD</b>, isi kolom Jawaban Peserta bersama peserta. Perhatikan kolom Cek dan Skor yang terisi otomatis.</div>
+  <div class="slide-number">04 / 18</div>
+</section>
+
+<!-- ============ 05 · SHORTCUT ============ -->
+<section class="slide" data-title="Shortcut &amp; Rapihin Data" data-note="Tekankan bahwa shortcut ini yang membedakan orang awam dengan profesional. Demo langsung Ctrl+T (bikin tabel), Alt+= (AutoSum), dan AutoFit (Alt, H, O, I). Sebutkan juga jurus bonus NUMBERVALUE untuk data teks dari web.">
+  <div class="eyebrow">04 · WORKFAST</div>
+  <h2>Shortcut: Rapihin Data &amp; Hitung Cepat</h2>
+  <p class="lead">Peserta sering lambat bukan karena tidak paham rumus, tapi karena pakai mouse ke sana-kemari. Hafalkan jurus ini.</p>
+  
+  <div class="card-grid" style="margin-top:15px">
+    <div class="card" style="border-left: 4px solid var(--caramel);">
+      <h3 style="color:var(--coffee);margin-bottom:4px">Ctrl + T</h3>
+      <p style="font-size:11px;margin-bottom:0">Ubah data jadi <b>Tabel</b>. Otomatis berwarna, filter nyala, rumus nyambung ke bawah.</p>
+    </div>
+    <div class="card" style="border-left: 4px solid var(--caramel);">
+      <h3 style="color:var(--coffee);margin-bottom:4px">Alt + =</h3>
+      <p style="font-size:11px;margin-bottom:0"><b>AutoSum</b>. Jumlahin data 1 detik tanpa perlu ngetik <code>=SUM()</code> manual.</p>
+    </div>
+    <div class="card" style="border-left: 4px solid var(--caramel);">
+      <h3 style="color:var(--coffee);margin-bottom:4px">Ctrl + 1</h3>
+      <p style="font-size:11px;margin-bottom:0"><b>Format Cells</b>. Ubah angka jadi Rupiah, desimal, atau format tanggal.</p>
+    </div>
+    <div class="card" style="border-left: 4px solid var(--caramel);">
+      <h3 style="color:var(--coffee);margin-bottom:4px">Alt, H, O, I</h3>
+      <p style="font-size:11px;margin-bottom:0"><b>AutoFit</b>. Lebarkan kolom otomatis sesuai panjang teks. (Atau double-click garis kolom).</p>
+    </div>
+    <div class="card" style="border-left: 4px solid var(--caramel);">
+      <h3 style="color:var(--coffee);margin-bottom:4px">Ctrl + Shift + ↓</h3>
+      <p style="font-size:11px;margin-bottom:0"><b>Blok Cepat</b>. Seleksi ribuan baris data sekejap tanpa scroll mouse.</p>
+    </div>
+    <div class="card" style="border-left: 4px solid var(--caramel);">
+      <h3 style="color:var(--coffee);margin-bottom:4px">F4</h3>
+      <p style="font-size:11px;margin-bottom:0"><b>Absolute Ref ($)</b>. Nginclok rumus biar kolom/baris nggak bergeser saat di-copy.</p>
+    </div>
+  </div>
+  
+  <div class="bottom-callout" style="margin-top:15px; background:var(--sage); border-left-color:var(--coffee);">
+    <strong>💡 Jurus Bonus (Teks jadi Angka):</strong> Kalau copy data dari web formatnya US (contoh: <code>100,000.40</code>), jangan pusing. Pakai rumus: <br>
+    <code style="display:inline-block;margin-top:6px;font-size:12px">=NUMBERVALUE(A2, ".", ",")</code>
+  </div>
+  <div class="slide-number">05 / 18</div>
+</section>
+
+<!-- ============ 06 · COUNTIF FORMAT ============ -->
+<section class="slide" data-title="COUNTIF — format" data-note="Demo di sheet Countif. Contoh no.1 =COUNTIF(C5:C19;Electrical) hasilnya 3. Tekankan: kriteria teks WAJIB pakai tanda kutip ganda. Operator perbandingan juga WAJIB di dalam kutip. Wildcard bintang untuk teks parsial, tanda tanya untuk satu karakter.">
+  <div class="eyebrow">05 · COUNTIF</div>
+  <h2>COUNTIF — 1 Kondisi</h2>
+  <p class="lead">Menjawab pertanyaan "berapa banyak yang memenuhi syarat?"</p>
+  <div class="formula" style="font-size:14px;padding:16px 20px;margin:20px 0">=COUNTIF(range, criteria)</div>
+  <div class="formula-stack">
+    <div class="formula-row"><strong>Hitung teks</strong><code>=COUNTIF(C5:C19,"Electrical")</code></div>
+    <div class="formula-row"><strong>Hitung dengan operator</strong><code>=COUNTIF(H5:H19,"&gt;2000000")</code></div>
+    <div class="formula-row"><strong>Hitung bukan sama dengan</strong><code>=COUNTIF(D5:D19,"&lt;&gt;High")</code></div>
+    <div class="formula-row"><strong>Wildcard parsial</strong><code>=COUNTIF(F5:F19,"*Prima*")</code></div>
+  </div>
+  <div class="bottom-callout" style="margin-top:14px"><strong>Aturan emas:</strong> kriteria teks DAN operator perbandingan WAJIB dalam tanda kutip ganda. <code>"Electrical"</code> benar, <code>Electrical</code> tanpa kutip akan error.</div>
+  <div class="slide-number">06 / 18</div>
+</section>
+
+<!-- ============ 07 · COUNTIF JEBAKAN ============ -->
+<section class="slide" data-title="COUNTIF — jebakan" data-note="Tunjukkan 3 jebakan paling umum. Demo jebakan 1 langsung di layar — ketik tanpa kutip, lihat hasilnya. Bandingkan dengan yang pakai kutip.">
+  <div class="eyebrow">06 · COMMON PITFALLS</div>
+  <h2>Tiga jebakan COUNTIF</h2>
+  <p class="lead">Peserta sering salah di tiga hal ini — kenali sejak awal.</p>
+  <div class="compare">
+    <div class="compare-panel raw"><span class="panel-tag">SALAH</span><h3>Tanpa tanda kutip</h3><p>Mengetik kriteria langsung tanpa quotes.</p><div class="formula">=COUNTIF(C:C,Electrical)</div></div>
+    <div class="compare-panel master"><span class="panel-tag">BENAR</span><h3>Dengan tanda kutip</h3><p>Selalu bungkus teks &amp; operator dengan quotes.</p><div class="formula">=COUNTIF(C:C,"Electrical")</div></div>
+  </div>
+  <div class="card-grid" style="margin-top:18px">
+    <div class="card"><h3>Jebakan 1 — Quotes</h3><p>Tanpa kutip, Excel bingung — hasil error atau 0.</p></div>
+    <div class="card"><h3>Jebakan 2 — Range</h3><p>Range salah kolom, hasil ngawur. Pastikan kolom sesuai kriteria.</p></div>
+    <div class="card"><h3>Jebakan 3 — Wildcard</h3><p><code>*</code> untuk parsial, <code>?</code> untuk 1 karakter.</p></div>
+  </div>
+  <div class="slide-number">07 / 18</div>
+</section>
+
+<!-- ============ 08 · COUNTIF LATIHAN ============ -->
+<section class="slide" data-title="COUNTIF — latihan" data-note="Beri waktu 5 menit. Berjalan keliling kelas. Bantu yang stuck di soal no.4 (operator) atau no.6 (tanda kurang dari lebih dari). Setelah 5 menit, bahas bareng 2 soal tersulit.">
+  <div class="eyebrow">07 · PRACTICE · 5 MENIT</div>
+  <h2>Latihan COUNTIF</h2>
+  <p class="lead">Buka sheet <b>Countif</b>. Isi kolom <b>Jawaban Peserta</b>.</p>
+  <table class="mini-table">
+    <thead><tr><th style="width:40px">No</th><th>Pertanyaan</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td>Berapa tiket Service "Electrical"?</td></tr>
+      <tr><td>2</td><td>Berapa tiket Priority "High"?</td></tr>
+      <tr><td>3</td><td>Berapa tiket SLA "Open"?</td></tr>
+      <tr><td>4</td><td>Berapa tiket Cost &gt; 2.000.000?</td></tr>
+      <tr><td>5</td><td>Berapa tiket vendor "PT Cipta Facility"?</td></tr>
+      <tr><td>6</td><td>Berapa tiket yang BUKAN "HVAC"?</td></tr>
+    </tbody>
+  </table>
+  <div class="bottom-callout" style="margin-top:14px"><strong>Setelah 5 menit:</strong> kita bahas bareng. Kolom Cek di sheet akan menunjukkan tanda centang atau silang secara otomatis.</div>
+  <div class="slide-number">08 / 18</div>
+</section>
+
+<!-- ============ 09 · COUNTIFS FORMAT ============ -->
+<section class="slide" data-title="COUNTIFS — format" data-note="Demo no.1 =COUNTIFS(D5:D19;High;E5:E19;Open) hasilnya 2. Tekankan: setiap range harus punya kriteria sendiri (berpasangan). Bisa 2 pasang, 3 pasang, dst.">
+  <div class="eyebrow">08 · COUNTIFS</div>
+  <h2>COUNTIFS — Banyak Kondisi</h2>
+  <p class="lead">Menjawab pertanyaan "berapa banyak yang memenuhi SEMUA syarat?" (logika AND)</p>
+  <div class="formula" style="font-size:13px;padding:16px 20px;margin:20px 0">=COUNTIFS(range1, criteria1, range2, criteria2, ...)</div>
+  <div class="formula-stack">
+    <div class="formula-row"><strong>2 kondisi</strong><code>=COUNTIFS(D5:D19,"High",E5:E19,"Open")</code></div>
+    <div class="formula-row"><strong>3 kondisi</strong><code>=COUNTIFS(D5:D19,"High",E5:E19,"Open",H5:H19,"&gt;2000000")</code></div>
+    <div class="formula-row"><strong>Dengan wildcard</strong><code>=COUNTIFS(F5:F19,"*Cipta*",E5:E19,"Open")</code></div>
+  </div>
+  <div class="bottom-callout" style="margin-top:14px"><strong>Aturan:</strong> selalu <b>range, criteria, range, criteria, ...</b> — berpasangan. Bisa 2 pasang, 3 pasang, dst.</div>
+  <div class="slide-number">09 / 18</div>
+</section>
+
+<!-- ============ 10 · COUNTIFS JEBAKAN ============ -->
+<section class="slide" data-title="COUNTIFS — jebakan" data-note="Demo langsung: ketik =COUNTIFS(D:D,E:E) di depan peserta, lihat errornya. Lalu betulkan.">
+  <div class="eyebrow">09 · COMMON PITFALLS</div>
+  <h2>Jebakan COUNTIFS</h2>
+  <p class="lead">Paling sering: range dan criteria tidak berpasangan, atau salah kolom.</p>
+  <div class="compare">
+    <div class="compare-panel raw"><span class="panel-tag">SALAH</span><h3>Tidak berpasangan</h3><div class="formula" style="font-size:11px">=COUNTIFS(D:D, E:E)</div><p style="font-size:11px">Range D dan E berdampingan tanpa kriteria.</p></div>
+    <div class="compare-panel master"><span class="panel-tag">BENAR</span><h3>Berpasangan</h3><div class="formula" style="font-size:11px">=COUNTIFS(D:D,"High", E:E,"Open")</div><p style="font-size:11px">Setiap range punya kriteria sendiri.</p></div>
+  </div>
+  <div class="card-grid" style="margin-top:18px">
+    <div class="card"><h3>Jebakan 1</h3><p>Lupa tanda kutip di kriteria teks.</p></div>
+    <div class="card"><h3>Jebakan 2</h3><p>Range dan kriteria tertukar posisinya.</p></div>
+    <div class="card"><h3>Jebakan 3</h3><p>Operator perbandingan di luar kutip.</p></div>
+  </div>
+  <div class="slide-number">10 / 18</div>
+</section>
+
+<!-- ============ 11 · SUMIF FORMAT ============ -->
+<section class="slide" data-title="SUMIF — format" data-note="Demo =SUMIF(C5:C19;Electrical;H5:H19). Hasil: 8.157.000. Tunjukkan trik kalau sum_range sama dengan criteria_range boleh cuma 2 argumen: =SUMIF(H5:H19;>2000000).">
+  <div class="eyebrow">10 · SUMIF</div>
+  <h2>SUMIF — 1 Kondisi</h2>
+  <p class="lead">Menjawab pertanyaan "berapa totalnya yang memenuhi syarat?"</p>
+  <div class="formula" style="font-size:13px;padding:16px 20px;margin:20px 0">=SUMIF(criteria_range, criteria, sum_range)</div>
+  <div class="formula-stack">
+    <div class="formula-row"><strong>Jumlahkan Cost per Service</strong><code>=SUMIF(C5:C19,"Electrical",H5:H19)</code></div>
+    <div class="formula-row"><strong>Jumlahkan Cost per Priority</strong><code>=SUMIF(D5:D19,"High",H5:H19)</code></div>
+    <div class="formula-row"><strong>sum_range = criteria_range</strong><code>=SUMIF(H5:H19,"&gt;2000000")</code></div>
+  </div>
+  <div class="bottom-callout" style="margin-top:14px"><strong>Trik:</strong> kalau sum_range sama dengan criteria_range, boleh dihilangkan. Cukup 2 argumen.</div>
+  <div class="slide-number">11 / 18</div>
+</section>
+
+<!-- ============ 12 · SUMIF vs SUMIFS — KRITIS ============ -->
+<section class="slide" data-title="⚠️ SUMIF vs SUMIFS" data-note="INI MOMEN PALING PENTING SESI INI. Tulis besar di papan. Demo langsung: ketik SUMIFS dengan urutan SUMIF di depan peserta, lihat errornya, baru betulkan. Ini bikin mereka ingat. Tekankan: SUMIF = 1 kondisi, sum_range di BELAKANG. SUMIFS = banyak kondisi, sum_range di DEPAN.">
+  <div class="eyebrow">11 · PALING PENTING</div>
+  <h2>SUMIF vs SUMIFS — beda urutan</h2>
+  <p class="lead">Ini penyebab error nomor satu peserta. Hafalkan bedanya.</p>
+  <div class="compare">
+    <div class="compare-panel raw">
+      <span class="panel-tag">SUMIF · 1 KONDISI</span>
+      <h3>sum_range di BELAKANG</h3>
+      <div class="formula" style="font-size:12px;margin-top:12px">
+        =SUMIF(<br>
+        &nbsp;&nbsp;criteria_range,<br>
+        &nbsp;&nbsp;criteria,<br>
+        &nbsp;&nbsp;sum_range &nbsp;← DI BELAKANG<br>
+        )
+      </div>
+    </div>
+    <div class="compare-panel master">
+      <span class="panel-tag">SUMIFS · BANYAK KONDISI</span>
+      <h3>sum_range di DEPAN</h3>
+      <div class="formula" style="font-size:12px;margin-top:12px">
+        =SUMIFS(<br>
+        &nbsp;&nbsp;sum_range, &nbsp;← DI DEPAN<br>
+        &nbsp;&nbsp;criteria_range1, criteria1,<br>
+        &nbsp;&nbsp;criteria_range2, criteria2<br>
+        )
+      </div>
+    </div>
+  </div>
+  <div class="bottom-callout" style="margin-top:16px"><strong>Latihan di kelas:</strong> tulis SUMIFS dengan urutan SUMIF di depan peserta, lihat errornya, diskusikan. Ingat: SUM + IF = 1, SUM + IFS = banyak.</div>
+  <div class="slide-number">12 / 18</div>
+</section>
+
+<!-- ============ 13 · SUMIFS FORMAT ============ -->
+<section class="slide" data-title="SUMIFS — format" data-note="Demo =SUMIFS(H5:H19;D5:D19;High;E5:E19;Open). Hasilnya sama dengan SUMIF if filter sama, tapi SUMIFS bisa handle banyak kondisi. Tunjukkan bedanya dengan SUMIF supaya peserta paham kapan pakai yang mana.">
+  <div class="eyebrow">12 · SUMIFS</div>
+  <h2>SUMIFS — Banyak Kondisi</h2>
+  <p class="lead">Menjumlahkan dengan dua syarat atau lebih.</p>
+  <div class="formula" style="font-size:12px;padding:16px 20px;margin:20px 0">=SUMIFS(sum_range, range1, criteria1, range2, criteria2, ...)</div>
+  <div class="formula-stack">
+    <div class="formula-row"><strong>2 kondisi</strong><code>=SUMIFS(H5:H19,D5:D19,"High",E5:E19,"Open")</code></div>
+    <div class="formula-row"><strong>3 kondisi</strong><code>=SUMIFS(H5:H19,D5:D19,"High",E5:E19,"Open",H5:H19,"&gt;=2000000")</code></div>
+    <div class="formula-row"><strong>Sum QYT Teknisi</strong><code>=SUMIFS(I5:I19,C5:C19,"Electrical",E5:E19,"Open")</code></div>
+  </div>
+  <div class="bottom-callout" style="margin-top:14px"><strong>Perhatikan:</strong> sum_range (H atau I) selalu di <b>depan</b>, bukan di belakang seperti SUMIF.</div>
+  <div class="slide-number">13 / 18</div>
+</section>
+
+<!-- ============ 14 · KOMBINASI IF ============ -->
+<section class="slide" data-title="Kombinasi IF" data-note="Baca pelan-pelan. Minta peserta mengulang dengan kata-kata sendiri. Tekankan bahwa COUNTIF/SUMIF adalah bahan, IF adalah pengambil keputusannya. Contoh no.4 adalah bonus AVERAGEIF — fungsi yang jarang diketahui tapi berguna.">
+  <div class="eyebrow">13 · KOMBINASI IF + AGREGAT</div>
+  <h2>Kombinasi IF + COUNTIF / SUMIF</h2>
+  <p class="lead">Hasil hitungan bisa jadi bahan pengambilan keputusan dengan IF.</p>
+  <div class="formula-stack" style="margin-top:20px">
+    <div class="formula-row"><strong>IF + SUMIF</strong><code>=IF(SUMIF(D5:D19,"High",H5:H19)&gt;10000000,"Over Budget","Within Budget")</code></div>
+    <div class="formula-row"><strong>IF + COUNTIFS</strong><code>=IF(COUNTIFS(D5:D19,"High",E5:E19,"Open")&gt;=3,"Banyak Darurat","Aman")</code></div>
+    <div class="formula-row"><strong>IF + AND + agregat</strong><code>=IF(AND(SUMIF(...)&gt;5000000,COUNTIFS(...)&gt;0),"Perlu Tindakan","Normal")</code></div>
+    <div class="formula-row"><strong>Bonus: AVERAGEIF</strong><code>=IFERROR(AVERAGEIF(D5:D19,"High",H5:H19),"Tidak Ada Data")</code></div>
+  </div>
+  <div class="bottom-callout" style="margin-top:14px"><strong>Cara baca:</strong> "Kalau total Cost Priority High lebih dari 10 juta, tampilkan Over Budget."</div>
+  <div class="slide-number">14 / 18</div>
+</section>
+
+<!-- ============ 15 · KOMBINASI IF LATIHAN ============ -->
+<section class="slide" data-title="Kombinasi IF — latihan" data-note="Ini soal paling susah. Beri 10 menit. Berjalan keliling. Bantu yang macet di no.3 (butuh AND + SUMIF + COUNTIFS) atau no.5 (butuh COUNTIF + SUMIF + AND). Soal no.4 adalah bonus pengenalan AVERAGEIF — jarang diketahui tapi berguna.">
+  <div class="eyebrow">14 · PRACTICE · 10 MENIT</div>
+  <h2>Latihan Kombinasi IF</h2>
+  <p class="lead">Buka sheet <b>Kombinasi IF</b>. Isi kolom <b>Jawaban Peserta</b>.</p>
+  <table class="mini-table">
+    <thead><tr><th style="width:40px">No</th><th>Pertanyaan</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td>Total Cost Priority "High" &gt; 10jt? → "Over Budget" / "Within Budget"</td></tr>
+      <tr><td>2</td><td>Tiket High + Open ≥ 3? → "Banyak Darurat" / "Aman"</td></tr>
+      <tr><td>3</td><td>Total Cost Plumbing &gt; 5jt DAN ada High-Open? → "Perlu Tindakan" / "Normal"</td></tr>
+      <tr><td>4</td><td>Rata-rata Cost Priority "High" (AVERAGEIF)</td></tr>
+      <tr><td>5</td><td>Jumlah Electrical ≥ 3 DAN Cost &gt; 5jt? → "Target Tercapai" / "Belum Tercapai"</td></tr>
+    </tbody>
+  </table>
+  <div class="bottom-callout" style="margin-top:14px"><strong>Ini soal challenge.</strong> Jangan takut salah — fokus ke logikanya dulu.</div>
+  <div class="slide-number">15 / 18</div>
+</section>
+
+<!-- ============ 16 · PENILAIAN ============ -->
+<section class="slide" data-title="Penilaian" data-note="Buka sheet Nilai Peserta. Skor otomatis terhitung. Bacakan rentang kategori. Ingatkan bahwa kategori hanya indikator pemahaman, bukan penilaian kinerja. Peserta di bawah 60 disarankan ulangi sheet RD dan Countif.">
+  <div class="eyebrow">15 · SCORING</div>
+  <h2>Penilaian otomatis</h2>
+  <p class="lead">Sheet <b>Nilai Peserta</b> menghitung skor Anda otomatis.</p>
+  <div class="layout-two" style="margin-top:20px">
+    <div>
+      <table class="mini-table">
+        <thead><tr><th>Materi</th><th style="text-align:right">Skor Maks</th></tr></thead>
+        <tbody>
+          <tr><td>Review Dasar</td><td style="text-align:right">7</td></tr>
+          <tr><td>COUNTIF</td><td style="text-align:right">12</td></tr>
+          <tr><td>COUNTIFS</td><td style="text-align:right">15</td></tr>
+          <tr><td>SUMIF</td><td style="text-align:right">10</td></tr>
+          <tr><td>SUMIFS</td><td style="text-align:right">15</td></tr>
+          <tr><td>Kombinasi IF</td><td style="text-align:right">20</td></tr>
+          <tr style="background:#f5ead9"><td><b>TOTAL</b></td><td style="text-align:right"><b>79</b></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="side-note">
+      <h3>Kategori</h3>
+      <p>✓ <b>≥ 90</b> — Sangat Baik</p>
+      <p>✓ <b>80–89</b> — Baik</p>
+      <p>✓ <b>70–79</b> — Cukup</p>
+      <p>✓ <b>60–69</b> — Perlu Latihan</p>
+      <p>✓ <b>&lt; 60</b> — Perlu Pendampingan</p>
+      <p style="font-size:10px;color:#c8b2a0;margin-top:14px">Kategori sebagai indikator pemahaman, bukan penilaian kinerja.</p>
+    </div>
+  </div>
+  <div class="slide-number">16 / 18</div>
+</section>
+
+<!-- ============ 17 · RINGKASAN RUMUS ============ -->
+<section class="slide" data-title="Ringkasan rumus" data-note="Gunakan slide ini sebagai daftar rumus yang bisa dipelajari ulang di rumah. Tekankan sekali lagi beda SUMIF vs SUMIFS. Ingatkan pemisah titik koma di Excel Indonesia.">
+  <div class="eyebrow">16 · QUICK REFERENCE</div>
+  <h2>Ringkasan formula Sesi 3</h2>
+  <p class="lead">Simpan daftar ini untuk latihan mandiri dan pekerjaan.</p>
+  <div class="formula-reference-grid">
+    <div class="formula-reference-card"><h3>COUNTIF</h3><code>=COUNTIF(range, criteria)</code><p><b>Cara baca:</b> hitung yang memenuhi 1 kriteria.</p></div>
+    <div class="formula-reference-card"><h3>COUNTIFS</h3><code>=COUNTIFS(r1,c1,r2,c2)</code><p><b>Cara baca:</b> hitung yang memenuhi banyak kriteria (AND).</p></div>
+    <div class="formula-reference-card"><h3>SUMIF</h3><code>=SUMIF(cr, c, sr)</code><p><b>Cara baca:</b> jumlahkan berdasarkan 1 kriteria. sum_range di BELAKANG.</p></div>
+    <div class="formula-reference-card"><h3>SUMIFS</h3><code>=SUMIFS(sr, r1, c1, r2, c2)</code><p><b>Cara baca:</b> jumlahkan berdasarkan banyak kriteria. sum_range di DEPAN.</p></div>
+    <div class="formula-reference-card"><h3>IF + SUMIF</h3><code>=IF(SUMIF(...)&gt;X,"A","B")</code><p><b>Cara baca:</b> ambil keputusan berdasarkan total.</p></div>
+    <div class="formula-reference-card"><h3>AVERAGEIF + IFERROR</h3><code>=IFERROR(AVERAGEIF(...),"...")</code><p><b>Cara baca:</b> rata-rata + fallback jika error.</p></div>
+  </div>
+  <div class="bottom-callout" style="margin-top:14px"><strong>Ingat:</strong> SUMIF → sum_range di <b>belakang</b>. SUMIFS → sum_range di <b>depan</b>. Ini yang paling sering ditukar.</div>
+  <p style="font-size:9px;margin-top:10px;color:#968779">Pemisah titik koma sesuai Excel Indonesia. Jika Excel Anda menggunakan koma, ganti pemisahnya.</p>
+  <div class="slide-number">17 / 18</div>
+</section>
+
+<!-- ============ 18 · CLOSING ============ -->
+<section class="slide cover" data-title="Penutup" data-note="Tutup dengan Q&A. Ingatkan peserta yang masih di bawah 60 untuk mengulangi sheet RD dan Countif dulu. PR opsional: kerjakan sheet Opational (laporan bulanan pakai SUMIFS) — ini yang mereka lakukan di pekerjaan nyata.">
+  <div class="eyebrow">SESI 03 · PENUTUP</div>
+  <h1>Terima<br><span class="accent">Kasih</span></h1>
+  <p class="lead">Latihan mandiri: kerjakan sheet <b>Opational</b> — buat laporan bulanan pakai SUMIFS. Ini yang akan kalian lakukan di pekerjaan nyata.</p>
+  
+  <div style="margin-top:20px; position:relative; z-index:1; margin-bottom:24px;">
+    <a href="https://docs.google.com/spreadsheets/d/1Hbi7VzUARj4os64rt-fSWkp6HUkstqCF/edit?usp=sharing&ouid=113453549576979377139&rtpof=true&sd=true" target="_blank" class="btn-link" style="background:var(--caramel); color:var(--coffee) !important;">
+      📂 Buka Kembali Workbook Excel Sesi 3
+    </a>
+  </div>
+
+  <div class="cover-meta" style="margin-top:0">
+    <span class="pill">Pertanyaan?</span>
+    <span class="pill">Latihan mandiri</span>
+    <span class="pill">Post Management Data</span>
+  </div>
+  <div class="cover-footer">Post Management Data · Learn it, structure it, automate it</div>
+  <div class="slide-number">18 / 18</div>
+</section>
+
+</div>
+</main>
+
+<footer class="controls">
+  <div class="progress-wrap"><span class="counter" id="counter">01 / 18</span><div class="progress-track" aria-label="Kemajuan presentasi"><div class="progress-fill" id="progressFill"></div></div></div>
+  <div class="keyboard-hint">Navigasi: ← → / Space</div>
+  <div class="navs"><button class="nav-btn" id="prevBtn" type="button" aria-label="Slide sebelumnya" disabled>←</button><button class="nav-btn" id="nextBtn" type="button" aria-label="Slide selanjutnya">→</button></div>
+</footer>
+
+<!-- Modal Catatan Tutor -->
+<div class="note-pop" id="notePop" role="dialog" aria-modal="true" aria-labelledby="noteTitle">
+  <div class="note-card">
+    <div class="note-head"><h3 id="noteTitle">Catatan tutor</h3><button class="quiet-btn" id="closeNotes" style="color:var(--coffee);border-color:var(--line)" type="button">Tutup ✕</button></div>
+    <p id="noteText"></p>
+  </div>
+</div>
+
+<!-- Modal Daftar Materi -->
+<div class="note-pop" id="outlinePop" role="dialog" aria-modal="true" aria-labelledby="outlineTitle">
+  <div class="note-card">
+    <div class="note-head"><h3 id="outlineTitle">Daftar materi</h3><button class="quiet-btn" id="closeOutline" style="color:var(--coffee);border-color:var(--line)" type="button">Tutup ✕</button></div>
+    <div id="outlineList"></div>
+  </div>
+</div>
+
+<!-- Modal Cheat Sheet -->
+<div class="note-pop" id="cheatPop" role="dialog" aria-modal="true" aria-labelledby="cheatTitle">
+  <div class="role-guide-card">
+    <div class="note-head">
+      <div>
+        <div class="eyebrow">QUICK REFERENCE</div>
+        <h2 id="cheatTitle" style="font-size:clamp(25px,3vw,34px);margin-bottom:4px">Cheat Sheet Rumus</h2>
+      </div>
+      <button class="quiet-btn" id="closeCheat" style="color:var(--coffee);border-color:var(--line);flex:0 0 auto" type="button">Tutup ✕</button>
+    </div>
+    <div class="role-guide-intro">
+      <b>Semua rumus Sesi 3 dalam satu tempat.</b> Pemisah titik koma (;) sesuai Excel Indonesia. Jika Excel Anda menggunakan koma, ganti pemisahnya. Semua range di contoh mengacu ke data simulasi di sheet masing-masing.
+    </div>
+    <div class="role-guide-grid">
+      <article class="role-guide-item">
+        <h4>COUNTIF · 1 kondisi</h4>
+        <code class="role-guide-code">=COUNTIF(range, criteria)</code>
+        <p>Hitung banyak data yang memenuhi satu kriteria.</p>
+        <div class="role-guide-meta">Contoh</div>
+        <code class="role-guide-code">=COUNTIF(C5:C19, "Electrical")</code>
+        <div class="role-guide-result"><b>Cara baca:</b> hitung berapa tiket di kolom Service (C) yang isinya "Electrical".</div>
+      </article>
+      <article class="role-guide-item">
+        <h4>COUNTIFS · banyak kondisi</h4>
+        <code class="role-guide-code">=COUNTIFS(r1, c1, r2, c2, ...)</code>
+        <p>Hitung banyak data yang memenuhi SEMUA kriteria (logika AND).</p>
+        <div class="role-guide-meta">Contoh</div>
+        <code class="role-guide-code">=COUNTIFS(D5:D19, "High", E5:E19, "Open")</code>
+        <div class="role-guide-result"><b>Cara baca:</b> hitung tiket yang Priority-nya High DAN SLA-nya Open.</div>
+      </article>
+      <article class="role-guide-item">
+        <h4>SUMIF · 1 kondisi</h4>
+        <code class="role-guide-code">=SUMIF(criteria_range, criteria, sum_range)</code>
+        <p>Jumlahkan angka berdasarkan satu kriteria. <b>sum_range di BELAKANG.</b></p>
+        <div class="role-guide-meta">Contoh</div>
+        <code class="role-guide-code">=SUMIF(C5:C19, "Electrical", H5:H19)</code>
+        <div class="role-guide-result"><b>Cara baca:</b> jumlahkan kolom Cost (H) untuk tiket yang Service-nya Electrical.</div>
+        <p class="role-guide-warning"><b>Trik:</b> kalau sum_range = criteria_range, boleh dihilangkan: <code>=SUMIF(H5:H19, "&gt;2000000")</code></p>
+      </article>
+      <article class="role-guide-item">
+        <h4>SUMIFS · banyak kondisi</h4>
+        <code class="role-guide-code">=SUMIFS(sum_range, r1, c1, r2, c2, ...)</code>
+        <p>Jumlahkan berdasarkan banyak kriteria. <b>sum_range di DEPAN.</b></p>
+        <div class="role-guide-meta">Contoh</div>
+        <code class="role-guide-code">=SUMIFS(H5:H19, D5:D19, "High", E5:E19, "Open")</code>
+        <div class="role-guide-result"><b>Cara baca:</b> jumlahkan Cost untuk tiket yang Priority-nya High DAN SLA-nya Open.</div>
+        <p class="role-guide-warning"><b>Perhatian:</b> urutan argumen BEDA dengan SUMIF. Ini sumber error paling umum.</p>
+      </article>
+      <article class="role-guide-item">
+        <h4>IF + SUMIF / COUNTIFS</h4>
+        <code class="role-guide-code">=IF(SUMIF(...) &gt; X, "A", "B")</code>
+        <p>Ambil keputusan berdasarkan hasil hitungan.</p>
+        <div class="role-guide-meta">Contoh</div>
+        <code class="role-guide-code">=IF(SUMIF(D5:D19,"High",H5:H19)&gt;10000000,"Over Budget","Within Budget")</code>
+        <div class="role-guide-result"><b>Cara baca:</b> kalau total Cost Priority High lebih dari 10 juta, tampilkan "Over Budget". Kalau tidak, "Within Budget".</div>
+      </article>
+      <article class="role-guide-item">
+        <h4>AVERAGEIF + IFERROR · bonus</h4>
+        <code class="role-guide-code">=IFERROR(AVERAGEIF(range, criteria, avg_range), "pesan")</code>
+        <p>Rata-rata bersyarat + fallback jika error.</p>
+        <div class="role-guide-meta">Contoh</div>
+        <code class="role-guide-code">=IFERROR(AVERAGEIF(D5:D19,"High",H5:H19),"Tidak Ada Data")</code>
+        <div class="role-guide-result"><b>Cara baca:</b> rata-rata Cost untuk Priority High; jika tidak ada data, tampilkan "Tidak Ada Data".</div>
+      </article>
+    </div>
+    <div class="role-guide-intro" style="margin-top:14px;margin-bottom:0"><b>Aturan emas:</b> kriteria teks &amp; operator perbandingan WAJIB dalam tanda kutip ganda. SUMIF: sum_range di belakang. SUMIFS: sum_range di depan.</div>
+  </div>
+</div>
+
+<script>
+(() => {
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const prevBtn = document.getElementById('prevBtn');
+  const nextBtn = document.getElementById('nextBtn');
+  const counter = document.getElementById('counter');
+  const progressFill = document.getElementById('progressFill');
+  const notesBtn = document.getElementById('notesBtn');
+  const notePop = document.getElementById('notePop');
+  const noteText = document.getElementById('noteText');
+  const noteTitle = document.getElementById('noteTitle');
+  const outlinePop = document.getElementById('outlinePop');
+  const outlineList = document.getElementById('outlineList');
+  const cheatBtn = document.getElementById('cheatBtn');
+  const cheatPop = document.getElementById('cheatPop');
+  let current = 0;
+
+  const pad = (number) => String(number).padStart(2, '0');
+  function showSlide(index) {
+    current = Math.max(0, Math.min(slides.length - 1, index));
+    slides.forEach((slide, i) => {
+      slide.classList.toggle('active', i === current);
+      slide.classList.toggle('exit-left', i < current);
+      slide.setAttribute('aria-hidden', i === current ? 'false' : 'true');
+    });
+    counter.textContent = `${pad(current + 1)} / ${pad(slides.length)}`;
+    progressFill.style.width = `${((current + 1) / slides.length) * 100}%`;
+    prevBtn.disabled = current === 0;
+    nextBtn.disabled = current === slides.length - 1;
+    document.title = `${pad(current + 1)} — ${slides[current].dataset.title} | Sesi 3`;
+    if (notePop.classList.contains('open')) updateNote();
+  }
+  function updateNote() {
+    noteTitle.textContent = `Catatan tutor · ${slides[current].dataset.title}`;
+    noteText.textContent = slides[current].dataset.note || 'Tidak ada catatan untuk slide ini.';
+  }
+  function openNotes() { updateNote(); notePop.classList.add('open'); document.getElementById('closeNotes').focus(); }
+  function closeNotes() { notePop.classList.remove('open'); notesBtn.focus(); }
+  function openOutline() { outlinePop.classList.add('open'); document.getElementById('closeOutline').focus(); }
+  function closeOutline() { outlinePop.classList.remove('open'); document.getElementById('outlineBtn').focus(); }
+  function openCheat() { cheatPop.classList.add('open'); document.getElementById('closeCheat').focus(); }
+  function closeCheat() { cheatPop.classList.remove('open'); cheatBtn.focus(); }
+
+  prevBtn.addEventListener('click', () => showSlide(current - 1));
+  nextBtn.addEventListener('click', () => showSlide(current + 1));
+  notesBtn.addEventListener('click', openNotes);
+  document.getElementById('closeNotes').addEventListener('click', closeNotes);
+  document.getElementById('outlineBtn').addEventListener('click', openOutline);
+  document.getElementById('closeOutline').addEventListener('click', closeOutline);
+  cheatBtn.addEventListener('click', openCheat);
+  document.getElementById('closeCheat').addEventListener('click', closeCheat);
+  document.getElementById('fullscreenBtn').addEventListener('click', async () => {
+    const target = document.getElementById('presentation');
+    try {
+      if (!document.fullscreenElement) await target.requestFullscreen();
+      else await document.exitFullscreen();
+    } catch (error) { alert('Mode layar penuh tidak didukung pada browser ini.'); }
+  });
+  [notePop, outlinePop, cheatPop].forEach(pop => pop.addEventListener('click', event => { if (event.target === pop) pop.classList.remove('open'); }));
+  document.addEventListener('keydown', event => {
+    if (notePop.classList.contains('open') || outlinePop.classList.contains('open') || cheatPop.classList.contains('open')) {
+      if (event.key === 'Escape') { notePop.classList.remove('open'); outlinePop.classList.remove('open'); cheatPop.classList.remove('open'); }
+      return;
+    }
+    if (['ArrowRight', 'PageDown', ' '].includes(event.key)) { event.preventDefault(); showSlide(current + 1); }
+    if (['ArrowLeft', 'PageUp'].includes(event.key)) { event.preventDefault(); showSlide(current - 1); }
+    if (event.key === 'Home') showSlide(0);
+    if (event.key === 'End') showSlide(slides.length - 1);
+  });
+  slides.forEach((slide, index) => {
+    const li = document.createElement('button');
+    li.type = 'button';
+    li.textContent = `${pad(index + 1)}  ${slide.dataset.title}`;
+    li.style.cssText = 'display:block;width:100%;text-align:left;padding:11px 12px;margin:5px 0;border:1px solid #e7d9c9;border-radius:8px;background:#fffdf9;color:#493126;cursor:pointer;font-size:12px';
+    li.addEventListener('click', () => { showSlide(index); closeOutline(); });
+    outlineList.appendChild(li);
+  });
+  showSlide(0);
+})();
+</script>
+</body>
+</html>
